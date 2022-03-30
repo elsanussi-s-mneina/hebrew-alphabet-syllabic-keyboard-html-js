@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Hebrew Alphabetic Syllabic Virtual Keyboard</title>
+		<style>
+			button {
+				font-size: 3em;
+				margin: 0.4em;
+				padding: 0.2em;
+			}
+
+			textarea {
+				font-size: 2em;
+			}
+		</style>
+        
+	</head>
+	<body>
+		<h1>Hebrew Alphabet Syllabic Basic Keyboard</h1>
+		<textarea id="textOutput" dir="rtl" style="width:100%"></textarea>
+        <div id="root"></div>
+        
+		<div dir="rtl" style="text-align:left">
+
+            
+            <div>
+
+		</div>
+            
+            <script>
+            
+            // This function returns a function.
+            function writeFunction(someText) {
+                function writeIt() {
+                    document.getElementById("textOutput").value += someText;
+                }
+                return writeIt;
+                
+            }
+            
+            function createAndAttachButtonForWriting(currentText) {
+                var root = document.getElementById("root");
+                var firstButton = document.createElement("button");
+                var firstButtonText = document.createTextNode(currentText);
+                firstButton.appendChild(firstButtonText);
+                firstButton.onclick = writeFunction(currentText);
+                root.appendChild(firstButton);
+            }
+
+            var hebrewAlphabetWithoutSinShinDot = [
+"\u05D0",
+"\u05D1",
+"\u05D2",
+"\u05D3",
+"\u05D4",
+"\u05D5",
+"\u05D6",
+"\u05D7",
+"\u05D8",
+"\u05D9",
+"\u05DB",
+"\u05DA",
+"\u05DC",
+"\u05DE",
+"\u05DD",
+"\u05E0",
+"\u05DF",
+"\u05E1",
+"\u05E2",
+"\u05E4",
+"\u05E3",
+"\u05E6",
+"\u05E5",
+"\u05E7",
+"\u05E8",
+"\u05E9",
+"\u05EA",                                  
+                                  ];
+
+
+
+            var hebrewAlphabetWithSinAndShinDot = [
+"\u05D0",
+"\u05D1",
+"\u05D2",
+"\u05D3",
+"\u05D4",
+"\u05D5",
+"\u05D6",
+"\u05D7",
+"\u05D8",
+"\u05D9",
+"\u05DB",
+"\u05DA",
+"\u05DC",
+"\u05DE",
+"\u05DD",
+"\u05E0",
+"\u05DF",
+"\u05E1",
+"\u05E2",
+"\u05E4",
+"\u05E3",
+"\u05E6",
+"\u05E5",
+"\u05E7",
+"\u05E8",
+"\u05E9",
+"\u05E9\u05C1",
+"\u05E9\u05C2",
+"\u05EA",                                  
+                                  ];
+
+
+
+
+var hebrewAlphabet = hebrewAlphabetWithSinAndShinDot;
+
+var dagesh = "\u05BC";
+
+var vowelDiacritics = ["\u05B0", "\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BB"];
+
+var vowelDiacriticsForVav = ["\u05B0", "\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BA", "\u05BB"];           
+
+		var root = document.getElementById("root");
+		root.dir = "rtl";
+		for (var i = 0; i < hebrewAlphabet.length; i++) {
+            		createAndAttachButtonForWriting(hebrewAlphabet[i]);
+		}
+
+		for (var i = 0; i < hebrewAlphabet.length; i++) {
+			if (hebrewAlphabet[i] == "\u05D5") {
+				for (var j = 0; j < vowelDiacritics.length; j++) {
+					createAndAttachButtonForWriting(hebrewAlphabet[i] + vowelDiacriticsForVav[j]);
+				}
+			} else {
+
+				for (var j = 0; j < vowelDiacritics.length; j++) {
+					createAndAttachButtonForWriting(hebrewAlphabet[i] + vowelDiacritics[j]);
+				}
+
+			}
+            		createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh);
+
+			if (hebrewAlphabet[i] == "\u05D5") {
+				for (var j = 0; j < vowelDiacritics.length; j++) {
+					createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh + vowelDiacriticsForVav[j]);
+				}
+			} else {
+
+				for (var j = 0; j < vowelDiacritics.length; j++) {
+					createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh + vowelDiacritics[j]);
+				}
+
+			}
+
+
+		}
+                
+                
+            
+            
+            </script>
+
+	</body>
+</html>
