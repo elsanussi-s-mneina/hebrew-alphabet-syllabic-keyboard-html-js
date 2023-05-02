@@ -13,14 +13,23 @@
 
         textarea {
             font-size: 2em;
-        }
+			position: fixed;
+			width: 100%;
+			top: 30;
+			left: 10;
+		}
+		
+		root {
+			top: 60;	
+		}
+		
     </style>
 
 </head>
 
 <body>
     <h1>Hebrew Alphabet Syllabic Basic Keyboard</h1>
-    <textarea id="textOutput" dir="rtl" style="width:80%"></textarea>
+    <textarea id="textOutput" dir="rtl"></textarea>
     <div id="root"></div>
 
     <div dir="rtl" style="text-align:left">
@@ -49,6 +58,14 @@
             root.appendChild(firstButton);
         }
 
+		function isPharyngealLetter(theLetter) {
+			return theLetter === "\u05D0"  // alef
+			|| theLetter === "\u05D4" // he
+			|| theLetter === "\u05D7" // het
+			|| theLetter === "\u05E2" // ayin
+			;
+		}
+		
         var hebrewAlphabetWithoutSinShinDot = [
             "\u05D0",
             "\u05D1",
@@ -122,6 +139,11 @@
 
         var vowelDiacritics = ["\u05B0", "\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BB"];
 
+		var vowelDiacriticsGuttural = ["\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BB"]; // No sheva
+
+		
+		var vowelDiacriticsNonPharyngeal = ["\u05B0", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BB"]; // No chataf vowels
+		
         var vowelDiacriticsForVav = ["\u05B0", "\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BA", "\u05BB"];
 
         var root = document.getElementById("root");
@@ -131,29 +153,43 @@
         }
 
         for (var i = 0; i < hebrewAlphabet.length; i++) {
-            if (hebrewAlphabet[i] == "\u05D5") {
-                for (var j = 0; j < vowelDiacritics.length; j++) {
+            if (hebrewAlphabet[i] == "\u05D5") { // vav
+                for (var j = 0; j < vowelDiacriticsForVav.length; j++) {
                     createAndAttachButtonForWriting(hebrewAlphabet[i] + vowelDiacriticsForVav[j]);
                 }
             } else {
-
-                for (var j = 0; j < vowelDiacritics.length; j++) {
-                    createAndAttachButtonForWriting(hebrewAlphabet[i] + vowelDiacritics[j]);
+				let diacritics = [];
+				
+				
+				if (isPharyngealLetter(hebrewAlphabet[i])) {
+					diacritics = vowelDiacriticsGuttural;
+				} else {
+					diacritics = vowelDiacriticsNonPharyngeal;
                 }
-
+					
+				for (var j = 0; j < diacritics.length; j++) {
+					createAndAttachButtonForWriting(hebrewAlphabet[i] + diacritics[j]);
+				}
             }
-            createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh);
 
-            if (hebrewAlphabet[i] == "\u05D5") {
-                for (var j = 0; j < vowelDiacritics.length; j++) {
-                    createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh + vowelDiacriticsForVav[j]);
-                }
-            } else {
+			// ayin, chet, alef cannot have dagesh.
 
-                for (var j = 0; j < vowelDiacritics.length; j++) {
-                    createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh + vowelDiacritics[j]);
-                }
-
+			if (hebrewAlphabet[i] !== "\u05D0" && // alef
+			   hebrewAlphabet[i] !== "\u05D7" && // chet
+			   hebrewAlphabet[i] !== "\u05E2"  // ayin
+			){
+				createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh);
+			}
+			// vav with dagesh never has a vowel after.
+            if (hebrewAlphabet[i] !== "\u05D5") {
+								
+				if (!isPharyngealLetter(hebrewAlphabet[i])) {
+					let diacritics = vowelDiacriticsNonPharyngeal;
+					for (var j = 0; j < diacritics.length; j++) {
+						createAndAttachButtonForWriting(hebrewAlphabet[i] + dagesh + diacritics[j]);
+					}
+				}
+				
             }
 
 
@@ -176,7 +212,7 @@ Here is the LICENSE for this web application:
 
 MIT License
 
-Copyright (c) 2022 Elsanussi Mneina
+Copyright (c) 2023 Elsanussi Mneina
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
